@@ -49,13 +49,19 @@ def start_conversion():
     worker_input = 8
 
     # Define input and output folders
-    input_folder = "C:/Users/Hadjis/Desktop/testfiles" # Replace with your input folder
-    output_folder = "C:/Users/Hadjis/Desktop/outputfiles" # Replace with your output folder
+    input_folder = input_selection.get() # Replace with your input folder
+    output_folder = output_selection.get() # Replace with your output folder
+
+    directory_list = [x[0] for x in os.walk(input_folder)]
 
     start_time = time.time()
 
     # Convert all HEIC files in the directory
-    convert_all_heic_in_directory(input_folder, output_folder, max_workers=worker_input)  # Adjust max_workers based on your CPU cores
+    if current_only == True:
+        convert_all_heic_in_directory(input_folder, output_folder, max_workers=worker_input)
+    else:
+        for dir in directory_list:
+            convert_all_heic_in_directory(dir, output_folder, max_workers=worker_input)
     
     end_time = time.time()
 
@@ -71,6 +77,13 @@ def browse_output():
     selection = filedialog.askdirectory()
     output_selection.set(selection)
     print(output_selection)
+
+def debug():
+    print(input_selection.get())
+    test = [x[0] for x in os.walk(input_selection.get())]
+    print(test)
+
+current_only = False
 
 root = tk.Tk()
 
@@ -106,8 +119,11 @@ output_label.grid(row=3, column=0, columnspan=1, pady=10)
 button3 = Button(text="Browse...", command=browse_output)
 button3.grid(row=3, column=3)
 
-convert_button = Button(text= "Begin Conversion", font=convert_font, command= start_conversion)
+convert_button = Button(text= "Begin Conversion", font=convert_font, command=start_conversion)
 convert_button.grid(row=7, column=0, columnspan=4, pady=50)
+
+debug_button = Button(text= "Debug", font=convert_font, command= debug)
+debug_button.grid(row=8, column=0, columnspan=4, pady=50)
 
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=1)
