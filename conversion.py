@@ -6,6 +6,8 @@ from tkinter import ttk, messagebox, filedialog, StringVar
 from concurrent.futures import ThreadPoolExecutor
 from settings import *
 
+worker_input = 8
+
 # Function to convert a single HEIC file to PNG using pillow_heif
 def convert_heic_to_png(heic_file_path, output_folder):
     try:
@@ -30,7 +32,7 @@ def convert_heic_to_png(heic_file_path, output_folder):
         print(f"Failed to convert {heic_file_path}: {e}")
 
 # Function to process all HEIC files in a directory
-def convert_all_heic_in_directory(input_folder, output_folder, max_workers=4):
+def convert_all_heic_in_directory(input_folder, output_folder, max_workers):
     # Create output folder if it doesn't exist
     os.makedirs(output_folder, exist_ok=True)
     
@@ -44,23 +46,18 @@ def convert_all_heic_in_directory(input_folder, output_folder, max_workers=4):
             executor.submit(convert_heic_to_png, heic_file_path, output_folder)
 
 def start_conversion():
-    worker_input = 8
-
     directory_list = [x[0] for x in os.walk(input_selection.get())]
 
     start_time = time.time()
 
     # Convert all HEIC files in the directory
-    if current_only == True:
-        convert_all_heic_in_directory(input_selection.get(), output_selection.get(), max_workers=worker_input)
-    else:
+    if recursive_scan.get():
         for dir in directory_list:
             convert_all_heic_in_directory(dir, output_selection.get(), max_workers=worker_input)
+    else:
+        convert_all_heic_in_directory(input_selection.get(), output_selection.get(), max_workers=worker_input)
     
     end_time = time.time()
 
     execution_time = end_time - start_time
     print(f"Execution time: {execution_time:.2f} seconds")
-
-current_only = False
-

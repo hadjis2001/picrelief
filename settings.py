@@ -1,8 +1,10 @@
-from tkinter import filedialog, StringVar
+from tkinter import filedialog, StringVar, BooleanVar
 from concurrent.futures import ThreadPoolExecutor
 
 input_selection = StringVar()
 output_selection = StringVar()
+recursive_scan = BooleanVar()
+limited_threads = BooleanVar()
 
 def browse_input():
     global input_selection

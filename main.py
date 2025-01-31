@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import *
-from tkinter import ttk, messagebox, filedialog
+from tkinter import ttk, messagebox, filedialog, IntVar
 from concurrent.futures import ThreadPoolExecutor
 import sv_ttk
 
@@ -9,12 +9,18 @@ root = tk.Tk()
 
 from conversion import *
 
+def toggle_spinbox():
+    if limited_threads.get():
+        thread_spinbox.config(state="normal")
+    else:
+        thread_spinbox.config(state="disabled")
+
 label_font = tkFont.Font(family="Arial", size=12, weight=tkFont.BOLD)
 convert_font = tkFont.Font(family="Arial", size=12, weight=tkFont.BOLD)
 
 root.title('PicRelief')
-root.minsize(900, 600)
-root.maxsize(900, 600)
+root.minsize(800, 300)
+root.maxsize(8000, 300)
 
 separator_label = ttk.Label(root, text="", borderwidth=1, relief=SUNKEN, anchor=CENTER)
 
@@ -39,11 +45,26 @@ output_label.grid(row=3, column=0, columnspan=1, pady=10)
 button3 = ttk.Button(text="Browse...", command=browse_output)
 button3.grid(row=3, column=3)
 
-folder_header = ttk.Label(root, text="Conversion Settings", borderwidth=1, relief=SUNKEN, anchor=CENTER, justify="center")
-folder_header.grid(row=4, column=0, columnspan=2, pady=10, sticky="nsew")
+settings_header = ttk.Label(root, text="Conversion Settings", borderwidth=1, relief=SUNKEN, anchor=CENTER, justify="center")
+settings_header.grid(row=4, column=0, columnspan=4, pady=10, sticky="nsew")
 
-convert_button = ttk.Button(text= "Begin Conversion", command=start_conversion)
-convert_button.grid(row=7, column=0, columnspan=4, pady=50)
+c1 = ttk.Checkbutton(root, text='Scan Sub-Folders',variable=recursive_scan, onvalue=True, offvalue=False)
+c1.grid(row=5, column=0, columnspan=1)
+
+c2 = ttk.Checkbutton(root, text='Delete After Conversion',variable=recursive_scan, onvalue=True, offvalue=False)
+c2.grid(row=5, column=1, columnspan=1)
+
+c3 = ttk.Checkbutton(root, text='Move All To Output Folder',variable=recursive_scan, onvalue=True, offvalue=False)
+c3.grid(row=5, column=2, columnspan=1)
+
+c4 = ttk.Checkbutton(root, text='Limit Threads',variable=limited_threads, onvalue=True, offvalue=False, command=toggle_spinbox)
+c4.grid(row=5, column=3, columnspan=1)
+
+thread_spinbox = ttk.Spinbox(root, from_=1, to=32, width=5, state="disabled")
+thread_spinbox.grid(row=6, column=3, columnspan=1, pady=10)
+
+convert_button = ttk.Button(text= "Start Conversion", command=start_conversion)
+convert_button.grid(row=7, column=0, columnspan=4, pady=10)
 
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=1)
