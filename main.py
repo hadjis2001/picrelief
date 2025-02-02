@@ -51,7 +51,7 @@ settings_header.grid(row=4, column=0, columnspan=4, pady=10, sticky="nsew")
 c1 = ttk.Checkbutton(root, text='Scan Sub-Folders',variable=recursive_scan, onvalue=True, offvalue=False)
 c1.grid(row=5, column=0, columnspan=1)
 
-c2 = ttk.Checkbutton(root, text='Delete After Conversion',variable=recursive_scan, onvalue=True, offvalue=False)
+c2 = ttk.Checkbutton(root, text='Delete After Conversion',variable=delete_after, onvalue=True, offvalue=False)
 c2.grid(row=5, column=1, columnspan=1)
 
 c3 = ttk.Checkbutton(root, text='Move All To Output Folder',variable=recursive_scan, onvalue=True, offvalue=False)
@@ -60,7 +60,7 @@ c3.grid(row=5, column=2, columnspan=1)
 c4 = ttk.Checkbutton(root, text='Limit Threads',variable=limited_threads, onvalue=True, offvalue=False, command=toggle_spinbox)
 c4.grid(row=5, column=3, columnspan=1)
 
-thread_spinbox = ttk.Spinbox(root, from_=1, to=32, width=5, state="disabled")
+thread_spinbox = ttk.Spinbox(root, from_=1, to=32, width=5, state="disabled", textvariable=thread_number)
 thread_spinbox.grid(row=6, column=3, columnspan=1, pady=10)
 
 convert_button = ttk.Button(text= "Start Conversion", command=start_conversion)

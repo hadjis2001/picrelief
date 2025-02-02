@@ -6,8 +6,6 @@ from tkinter import ttk, messagebox, filedialog, StringVar
 from concurrent.futures import ThreadPoolExecutor
 from settings import *
 
-worker_input = 8
-
 # Function to convert a single HEIC file to PNG using pillow_heif
 def convert_heic_to_png(heic_file_path, output_folder):
     try:
@@ -28,6 +26,7 @@ def convert_heic_to_png(heic_file_path, output_folder):
         image.save(output_file_path, "PNG")
         
         print(f"Converted {heic_file_path} to {output_file_path}")
+        os.remove(heic_file_path)
     except Exception as e:
         print(f"Failed to convert {heic_file_path}: {e}")
 
@@ -49,13 +48,14 @@ def start_conversion():
     directory_list = [x[0] for x in os.walk(input_selection.get())]
 
     start_time = time.time()
+    worker_input = thread_number.get()
 
     # Convert all HEIC files in the directory
     if recursive_scan.get():
         for dir in directory_list:
-            convert_all_heic_in_directory(dir, output_selection.get(), max_workers=worker_input)
+            convert_all_heic_in_directory(dir, output_selection.get(), worker_input)
     else:
-        convert_all_heic_in_directory(input_selection.get(), output_selection.get(), max_workers=worker_input)
+        convert_all_heic_in_directory(input_selection.get(), output_selection.get(), worker_input)
     
     end_time = time.time()
 
