@@ -19,8 +19,8 @@ label_font = tkFont.Font(family="Arial", size=12, weight=tkFont.BOLD)
 convert_font = tkFont.Font(family="Arial", size=12, weight=tkFont.BOLD)
 
 root.title('PicRelief')
-root.minsize(800, 300)
-root.maxsize(8000, 300)
+root.minsize(900, 300)
+root.maxsize(900, 300)
 
 separator_label = ttk.Label(root, text="", borderwidth=1, relief=SUNKEN, anchor=CENTER)
 
@@ -54,14 +54,11 @@ c1.grid(row=5, column=0, columnspan=1)
 c2 = ttk.Checkbutton(root, text='Delete After Conversion',variable=delete_after, onvalue=True, offvalue=False)
 c2.grid(row=5, column=1, columnspan=1)
 
-c3 = ttk.Checkbutton(root, text='Move All To Output Folder',variable=recursive_scan, onvalue=True, offvalue=False)
+c3 = ttk.Checkbutton(root, text='Limit Threads',variable=limited_threads, onvalue=True, offvalue=False, command=toggle_spinbox)
 c3.grid(row=5, column=2, columnspan=1)
 
-c4 = ttk.Checkbutton(root, text='Limit Threads',variable=limited_threads, onvalue=True, offvalue=False, command=toggle_spinbox)
-c4.grid(row=5, column=3, columnspan=1)
-
 thread_spinbox = ttk.Spinbox(root, from_=1, to=32, width=5, state="disabled", textvariable=thread_number)
-thread_spinbox.grid(row=6, column=3, columnspan=1, pady=10)
+thread_spinbox.grid(row=5, column=3, columnspan=1, pady=10)
 
 convert_button = ttk.Button(text= "Start Conversion", command=start_conversion)
 convert_button.grid(row=7, column=0, columnspan=4, pady=10)
