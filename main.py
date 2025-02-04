@@ -6,9 +6,14 @@ from concurrent.futures import ThreadPoolExecutor
 import sv_ttk
 
 root = tk.Tk()
+root.iconbitmap("icon.ico")
 
 from conversion import *
 
+load_settings()
+root.protocol("WM_DELETE_WINDOW", lambda: (save_settings(), root.destroy()))  # Save settings on close
+
+# Function to enable and disable spinbox for setting thread number
 def toggle_spinbox():
     if limited_threads.get():
         thread_spinbox.config(state="normal")
@@ -19,7 +24,7 @@ label_font = tkFont.Font(family="Arial", size=12, weight=tkFont.BOLD)
 convert_font = tkFont.Font(family="Arial", size=12, weight=tkFont.BOLD)
 
 root.title('PicRelief')
-root.minsize(900, 300)
+root.minsize(900, 300) # Fixed Window Size
 root.maxsize(900, 300)
 
 separator_label = ttk.Label(root, text="", borderwidth=1, relief=SUNKEN, anchor=CENTER)
